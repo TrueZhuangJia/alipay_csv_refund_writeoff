@@ -6,7 +6,7 @@ import os
 
 
 def is_refunded_rec(rec):  # 判断是否为有退款产生的交易记录
-    if rec[13].strip() != '0':
+    if rec[13].strip() != '0':  # 判断依据为， 第14列成功退款（元）的数值非0
         return True
     else:
         return False
@@ -25,14 +25,14 @@ def check_then_writeoff(rec):  # 定义一个针对每一条记录的处理函�
         return rec
 
 
-csv_filename = sys.argv[1]
-dirname, basename = os.path.split(csv_filename)
-new_csv_filename = os.path.join(dirname, 'new_'+basename)
-# csv_filename = r'e:\\data\\test1.csv'
-# new_csv_filename = r'e:\\data\\test2.csv'
+csv_filename = sys.argv[1]  # 文件拖入该exe程序，windows会将文件名作为程序的第2个参数
+dirname, basename = os.path.split(csv_filename)  # 拆分一下路径和文件名，方便生成新文件名
+new_csv_filename = os.path.join(dirname, 'new_'+basename)  # 加一下文件名前缀
+# csv_filename = r'e:\\data\\test1.csv'  # 用于调试的文件
+# new_csv_filename = r'e:\\data\\test2.csv'  # 用于调试的文件
 
 with open(csv_filename, newline='') as csvfile:
-    csv_list = list(csv.reader(csvfile, delimiter=','))  # 将csv文件读取为list
+    csv_list = list(csv.reader(csvfile, delimiter=','))  # 将csv文件读取为list  # csv.reader()得到的是一个iterator惰性序列， 须要转为list才能切片处理
     new_csv_list = csv_list[:5] + list(map(check_then_writeoff, csv_list[5:-7])) + csv_list[-7:]
     # 使用map方式处理[5:-7]数据区并拼接出新的list
     # list切片的特点：第一个索引包含在切出的片段，第二个索引不包含在切出的片段中。所以接接时保证首尾相接即可
