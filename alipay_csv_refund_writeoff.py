@@ -6,7 +6,7 @@ import os
 
 
 def is_refunded_rec(rec):  # 判断是否为有退款产生的交易记录
-    if rec[13].strip() != '0':
+    if rec[13].strip() != '0':  # 判断依据为， 第14列成功退款（元）的数值非0
         return True
     else:
         return False
@@ -25,11 +25,11 @@ def check_then_writeoff(rec):  # 定义一个针对每一条记录的处理函�
         return rec
 
 
-csv_filename = sys.argv[1]
-dirname, basename = os.path.split(csv_filename)
-new_csv_filename = os.path.join(dirname, 'new_'+basename)
-# csv_filename = r'e:\\data\\test1.csv'
-# new_csv_filename = r'e:\\data\\test2.csv'
+csv_filename = sys.argv[1]  # 文件拖入该exe程序，windows会将文件名作为程序的第2个参数
+dirname, basename = os.path.split(csv_filename)  # 拆分一下路径和文件名，方便生成新文件名
+new_csv_filename = os.path.join(dirname, 'new_'+basename)  # 加一下文件名前缀
+# csv_filename = r'e:\\data\\test1.csv'  # 用于调试的文件
+# new_csv_filename = r'e:\\data\\test2.csv'  # 用于调试的文件
 
 with open(csv_filename, newline='') as csvfile:
     csv_list = list(csv.reader(csvfile, delimiter=','))  # 将csv文件读取为list
